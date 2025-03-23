@@ -33,8 +33,7 @@ steps:
         terraform apply -auto-approve tfplan
 
 options:
-      logging: 'NONE'
-      machineType: 'E2_HIGHCPU_8'
-      substitutionOption: 'ALLOW_LOOSE'
+     logging: 'NONE'
+
 
 timeout: "1200s"
