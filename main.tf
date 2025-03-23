@@ -1,6 +1,6 @@
 # GCP Provider
 provider "google" {
-  project     = "<YOUR_PROJECT_ID>"
+  project     = "upheld-castle-452119-c2"
   region      = "us-central1"
   credentials = file("${path.module}/Terraform-secret.json")
 }
