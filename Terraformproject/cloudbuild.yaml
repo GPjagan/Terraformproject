@@ -8,6 +8,7 @@ steps:
       - |
         terraform init
 
+
   # Plan the infrastructure
   - name: 'hashicorp/terraform:1.5.7'
     id: 'plan'
