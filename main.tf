@@ -1,8 +1,8 @@
 # GCP Provider
 provider "google" {
-  project     = "<YOUR_PROJECT_ID>"
+  project     = "upheld-castle-452119-c2"
   region      = "us-central1"
-  credentials = file("<YOUR_GCP_CREDENTIALS_JSON>")
+  credentials = file("${path.module}/Terraform-secret.json")
 }
 
 # VM Instance
