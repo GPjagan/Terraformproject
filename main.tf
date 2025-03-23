@@ -2,7 +2,7 @@
 provider "google" {
   project     = "<YOUR_PROJECT_ID>"
   region      = "us-central1"
-  credentials = file("<YOUR_GCP_CREDENTIALS_JSON>")
+  credentials = file("${path.module}/Terraform-secret.json")
 }
 
 # VM Instance
