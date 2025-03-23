@@ -27,4 +27,8 @@ steps:
       - |
         terraform apply -auto-approve tfplan
 
+# Add logging option
+options:
+  logging: CLOUD_LOGGING_ONLY   # Use Cloud Logging only
+
 timeout: "1200s"
