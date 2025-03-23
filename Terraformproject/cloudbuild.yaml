@@ -1,30 +1,34 @@
-#steps:
-#  # Install Terraform
-#  - name: 'hashicorp/terraform:1.5.7'
-#    id: 'init'
-#    entrypoint: 'sh'
-#    args:
-#      - '-c'
-#      - |
-#        terraform init
-#
-#
-#  # Plan the infrastructure
-#  - name: 'hashicorp/terraform:1.5.7'
-#    id: 'plan'
-#    entrypoint: 'sh'
-#    args:
-#      - '-c'
-#      - |
-#        terraform plan -out=tfplan
-#
-#  # Apply the changes
-#  - name: 'hashicorp/terraform:1.5.7'
-#    id: 'apply'
-#    entrypoint: 'sh'
-#    args:
-#      - '-c'
-#      - |
-#        terraform apply -auto-approve tfplan
-#
-#timeout: "1200s"
+steps:
+  # Authenticate using the new GCP secret
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud secrets versions access latest --secret="terraform-deployer" > /workspace/terraform-deployer.json
+
+  # Initialize Terraform
+  - name: 'hashicorp/terraform:1.5.7'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform init
+
+  # Terraform Plan
+  - name: 'hashicorp/terraform:1.5.7'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform plan -out=tfplan
+
+  # Terraform Apply
+  - name: 'hashicorp/terraform:1.5.7'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform apply -auto-approve tfplan
+
+timeout: "1200s"
