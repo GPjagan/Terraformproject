@@ -5,7 +5,7 @@ steps:
     args:
       - '-c'
       - |
-        gcloud secrets versions access latest --secret="terraform-deployer" --project="upheld-castle-452119-c2" > /workspace/terraform-deployer.json || exit 1
+        gcloud secrets versions access latest --secret="terraform-deployerS" --project="upheld-castle-452119-c2" > /workspace/terraform-deployer.json || exit 1
 
   # Initialize Terraform
   - name: 'hashicorp/terraform:1.5.7'
