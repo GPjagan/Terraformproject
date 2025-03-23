@@ -33,9 +33,8 @@ steps:
         terraform apply -auto-approve tfplan
 
 options:
-  logging: CLOUD_LOGGING_ONLY   # ✅ Use Cloud Logging Only
-  machineType: 'E2_HIGHCPU_8'
-  substitutionOption: 'ALLOW_LOOSE'
-
+    logsBucket: "gs://cloud-build-logs-upheld-castle-452119-c2"
+    machineType: 'E2_HIGHCPU_8'
+    substitutionOption: 'ALLOW_LOOSE'
 
 timeout: "1200s"
