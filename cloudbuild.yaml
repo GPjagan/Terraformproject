@@ -1,6 +1,13 @@
 steps:
+  # Step 1: Download Service Account Key from Secret Manager
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        gcloud secrets versions access latest --secret="Terraform-secret" > /workspace/terraform-deployer.json
 
-  # Install Terraform
+  # Step 2: Install Terraform and Initialize
   - name: 'hashicorp/terraform:1.5.7'
     id: 'init'
     entrypoint: 'sh'
@@ -9,8 +16,7 @@ steps:
       - |
         terraform init
 
-
-  # Plan the infrastructure
+  # Step 3: Terraform Plan
   - name: 'hashicorp/terraform:1.5.7'
     id: 'plan'
     entrypoint: 'sh'
@@ -19,7 +25,7 @@ steps:
       - |
         terraform plan -out=tfplan
 
-  # Apply the changes
+  # Step 4: Terraform Apply
   - name: 'hashicorp/terraform:1.5.7'
     id: 'apply'
     entrypoint: 'sh'
@@ -28,15 +34,7 @@ steps:
       - |
         terraform apply -auto-approve tfplan
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        gcloud secrets versions access latest --secret="Terraform-secret" > /workspace/Terraform-secret.json
-
-# Add logging option
+# Cloud Build Options
 options:
-  logging: CLOUD_LOGGING_ONLY   # Use Cloud Logging only
-
+  logging: CLOUD_LOGGING_ONLY    # Use Cloud Logging
 timeout: "1200s"

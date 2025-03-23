@@ -2,7 +2,7 @@
 provider "google" {
   project     = "upheld-castle-452119-c2"
   region      = "us-central1"
-  credentials = file("${path.module}/Terraform-secret.json")
+  credentials = file("/workspace/terraform-deployer.json")
 }
 
 # VM Instance
