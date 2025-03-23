@@ -15,6 +15,7 @@ steps:
       - |
         terraform init
 
+
   # Terraform Plan
   - name: 'hashicorp/terraform:1.5.7'
     entrypoint: 'sh'
