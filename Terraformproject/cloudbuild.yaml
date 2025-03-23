@@ -1,0 +1,29 @@
+steps:
+  # Install Terraform
+  - name: 'hashicorp/terraform:1.5.7'
+    id: 'init'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform init
+
+  # Plan the infrastructure
+  - name: 'hashicorp/terraform:1.5.7'
+    id: 'plan'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform plan -out=tfplan
+
+  # Apply the changes
+  - name: 'hashicorp/terraform:1.5.7'
+    id: 'apply'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform apply -auto-approve tfplan
+
+timeout: "1200s"
