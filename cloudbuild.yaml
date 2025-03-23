@@ -7,6 +7,9 @@ steps:
       - |
         gcloud secrets versions access latest --secret="Terraform-secret" > /workspace/terraform-deployer.json
 
+
+
+
   # Step 2: Install Terraform and Initialize
   - name: 'hashicorp/terraform:1.5.7'
     id: 'init'
