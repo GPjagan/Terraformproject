@@ -5,15 +5,14 @@ steps:
     args:
       - '-c'
       - |
-        gcloud secrets versions access latest --secret="Terraform-secret" > /workspace/terraform-deployer.json
-
-
-
+        gcloud secrets versions access latest --secret="terraform-cred" > /workspace/gcp-terraform-keys.json
 
   # Step 2: Install Terraform and Initialize
   - name: 'hashicorp/terraform:1.5.7'
     id: 'init'
     entrypoint: 'sh'
+    env:
+      - 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/gcp-terraform-keys.json'
     args:
       - '-c'
       - |
@@ -23,6 +22,8 @@ steps:
   - name: 'hashicorp/terraform:1.5.7'
     id: 'plan'
     entrypoint: 'sh'
+    env:
+      - 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/gcp-terraform-keys.json'
     args:
       - '-c'
       - |
@@ -32,6 +33,8 @@ steps:
   - name: 'hashicorp/terraform:1.5.7'
     id: 'apply'
     entrypoint: 'sh'
+    env:
+      - 'GOOGLE_APPLICATION_CREDENTIALS=/workspace/gcp-terraform-keys.json'
     args:
       - '-c'
       - |
@@ -39,5 +42,7 @@ steps:
 
 # Cloud Build Options
 options:
-  logging: 'NONE'    # Use Cloud Logging
+
+  logging: 'CLOUD_LOGGING_ONLY'
+service_account: "terraform-deployer@terraform-cloud-build-454706.iam.gserviceaccount.com"
 timeout: "1200s"
