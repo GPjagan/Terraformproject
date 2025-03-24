@@ -93,7 +93,7 @@ options:
 
 
 # Cloud Build Service Account
-serviceAccount: '525418126086@cloudbuild.gserviceaccount.com'
+serviceAccount: 'terraform-deployer@terraform-cloud-build-454706.iam.gserviceaccount.com'
 
 # Store logs in the bucket
-logsBucket: "gs://run-sources-upheld-castle-452119-c2-us-central1"
+logsBucket: "gs://cloud-build-logs-terraform-cloud-build/logs/"
