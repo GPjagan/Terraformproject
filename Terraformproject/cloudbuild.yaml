@@ -93,7 +93,7 @@ options:
 
 
 # Cloud Build Service Account
-serviceAccount: '584959676724@cloudbuild.gserviceaccount.com'
+serviceAccount: '525418126086@cloudbuild.gserviceaccount.com'
 
 # Store logs in the bucket
 logsBucket: "gs://run-sources-upheld-castle-452119-c2-us-central1"
