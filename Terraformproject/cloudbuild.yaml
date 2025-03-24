@@ -1,42 +1,98 @@
+#steps:
+#  # Authenticate using the new GCP secret
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    entrypoint: 'bash'
+#    args:
+#      - '-c'
+#      - |
+#        gcloud secrets versions access latest --secret="terraform-deployers" --project="upheld-castle-452119-c2" > /workspace/terraform-deployer.json || exit 1
+#
+#  # Initialize Terraform
+#  - name: 'hashicorp/terraform:1.5.7'
+#    entrypoint: 'sh'
+#    args:
+#      - '-c'
+#      - |
+#        terraform init
+#
+#
+#  # Terraform Plan
+#  - name: 'hashicorp/terraform:1.5.7'
+#    entrypoint: 'sh'
+#    args:
+#      - '-c'
+#      - |
+#        terraform plan -out=tfplan
+#
+#  # Terraform Apply
+#  - name: 'hashicorp/terraform:1.5.7'
+#    entrypoint: 'sh'
+#    args:
+#      - '-c'
+#      - |
+#        terraform apply -auto-approve tfplan
+#
+#options:
+#  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+#  logging: CLOUD_LOGGING_ONLY
+#  machineType: 'E2_HIGHCPU_8'
+#  substitutionOption: 'ALLOW_LOOSE'
+#
+#
+#timeout: "1200s"
+
+
 steps:
-  # Authenticate using the new GCP secret
+  # Step 1: Authenticate with GCP using the Terraform service account secret
   - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'authenticate'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        gcloud secrets versions access latest --secret="terraform-deployers" --project="upheld-castle-452119-c2" > /workspace/terraform-deployer.json || exit 1
+        gcloud secrets versions access latest --secret="terraform-creds" > /workspace/gcp-terraform-keys.json
 
-  # Initialize Terraform
+  # Step 2: Terraform Initialization
   - name: 'hashicorp/terraform:1.5.7'
+    id: 'init'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        terraform init
+        terraform init \
+          -backend-config="bucket=run-sources-upheld-castle-452119-c2-us-central1" \
+          -backend-config="prefix=tf-state"
 
-
-  # Terraform Plan
+  # Step 3: Terraform Plan
   - name: 'hashicorp/terraform:1.5.7'
+    id: 'plan'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        terraform plan -out=tfplan
+        terraform plan -out=tfplan -var="project_id=$PROJECT_ID"
 
-  # Terraform Apply
+  # Step 4: Terraform Apply
   - name: 'hashicorp/terraform:1.5.7'
+    id: 'apply'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
         terraform apply -auto-approve tfplan
 
-options:
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
-  logging: CLOUD_LOGGING_ONLY
-  machineType: 'E2_HIGHCPU_8'
-  substitutionOption: 'ALLOW_LOOSE'
-
-
+# Cloud Build pipeline options
 timeout: "1200s"
+
+# Logging configuration
+options:
+  logging: CLOUD_LOGGING_ONLY
+  #substitution_option: 'ALLOW_LOOSE'
+  #dynamic_substitutions: true
+  machineType: 'E2_HIGHCPU_8'
+
+# Cloud Build Service Account
+serviceAccount: '584959676724@cloudbuild.gserviceaccount.com'
+
+# Store logs in the bucket
+logsBucket: "gs://run-sources-upheld-castle-452119-c2-us-central1"
