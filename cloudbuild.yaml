@@ -44,6 +44,5 @@ steps:
 options:
 
   logging: 'CLOUD_LOGGING_ONLY'
-service_account: "terraform-deployer@terraform-cloud-build-454706.iam.gserviceaccount.com"
+service_account: "525418126086@cloudbuild.gserviceaccount.com"
 timeout: "1200s"
-# projects/525418126086/secrets/terraform-cred
