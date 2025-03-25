@@ -89,7 +89,7 @@ resource "google_compute_instance" "vm_ware" {
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image  = "debian-cloud/debian-11"
       labels = {
         my_label = "value"
       }
@@ -108,6 +108,7 @@ resource "google_compute_instance" "vm_ware" {
       // Ephemeral public IP
     }
   }
+}
 
 # IAM Permissions for Cloud Build Service Account
 resource "google_storage_bucket_iam_member" "cloudbuild_writer" {
