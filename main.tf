@@ -81,34 +81,29 @@ resource "google_storage_bucket" "log_bucket" {
 }
 
 resource "google_compute_instance" "vm_ware" {
-  name         = "my-test-instance"
-  machine_type = "n2-standard-2"
+  name         = "example-vm-instance"
+  machine_type = "e2-medium"
   zone         = "us-central1-a"
-
-  tags = ["foo", "bar"]
 
   boot_disk {
     initialize_params {
-      image  = "debian-cloud/debian-11"
-      labels = {
-        my_label = "value"
-      }
+      image = "debian-cloud/debian-11"
     }
-  }
-
-  // Local SSD disk
-  scratch_disk {
-    interface = "NVME"
   }
 
   network_interface {
     network = "default"
+  }
 
-    access_config {
-      // Ephemeral public IP
-    }
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = [
+      machine_type,    # Ignore changes to machine type
+      metadata         # Ignore metadata updates
+    ]
   }
 }
+
 
 # IAM Permissions for Cloud Build Service Account
 resource "google_storage_bucket_iam_member" "cloudbuild_writer" {
