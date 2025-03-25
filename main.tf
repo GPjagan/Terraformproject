@@ -70,14 +70,14 @@ resource "google_storage_bucket" "log_bucket" {
     enabled = true
   }
 
-  lifecycle_rule {
-    action {
-      type = "Delete"
-    }
-    condition {
-      age = 30
-    }
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = [
+      storage_class,       # Ignore changes to storage class
+      labels               # Ignore label updates
+    ]
   }
+
 }
 
 resource "google_compute_instance" "vm_ware" {
