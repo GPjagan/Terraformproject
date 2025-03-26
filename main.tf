@@ -113,3 +113,8 @@ resource "google_storage_bucket_iam_member" "cloudbuild_writer" {
 }
 
 
+resource "google_bigquery_dataset" "medical_company" {
+  dataset_id = "medical_company"  # Name of the dataset
+  description = "A dataset for storing my data"
+  location    = "US"
+}
